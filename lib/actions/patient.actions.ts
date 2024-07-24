@@ -1,7 +1,7 @@
 "use server";
 
-import { ID, Query } from "node-appwrite";
-import { InputFile } from "node-appwrite/file";
+import { ID, InputFile, Query } from "node-appwrite";
+// import { InputFile } from "node-appwrite";
 import {
   BUCKET_ID,
   DATABASE_ID,
@@ -25,7 +25,6 @@ export const createUser = async (user: CreateUserParams) => {
       undefined,
       user.name
     );
-    console.log(newuser);
 
     return parseStringify(newuser);
   } catch (error: any) {
@@ -66,7 +65,7 @@ export const registerPatient = async ({
     if (identificationDocument) {
       const inputFile =
         identificationDocument &&
-        InputFile.fromBuffer(
+        InputFile.fromBlob(
           identificationDocument?.get("blobFile") as Blob,
           identificationDocument?.get("fileName") as string
         );
@@ -97,25 +96,13 @@ export const registerPatient = async ({
 // GET PATIENT
 export const getPatient = async (userId: string) => {
   try {
-    console.log("Fetching patient data for userId:", userId);
-
-    const patient = await databases.listDocuments(
+    const patients = await databases.listDocuments(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
-      [Query.equal("userId", userId)]
+      [Query.equal("userId", [userId])]
     );
 
-    console.log("Query result:", patient);
-
-    if (patient.documents.length === 0) {
-      console.warn("No documents found for userId:", userId);
-      return undefined;
-    }
-
-    const parsedPatient = parseStringify(patient.documents);
-    console.log("Parsed patient data:", parsedPatient);
-
-    return parsedPatient;
+    return parseStringify(patients.documents[0]);
   } catch (error) {
     console.error(
       "An error occurred while retrieving the patient details:",

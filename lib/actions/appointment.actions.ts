@@ -17,12 +17,6 @@ import { formatDateTime, parseStringify } from "../utils";
 export const createAppointment = async (
   appointment: CreateAppointmentParams
 ) => {
-  console.log(
-    DATABASE_ID!,
-    APPOINTMENT_COLLECTION_ID!,
-    ID.unique(),
-    appointment
-  );
   try {
     const newAppointment = await databases.createDocument(
       DATABASE_ID!,
@@ -139,8 +133,8 @@ export const updateAppointment = async ({
     );
 
     if (!updatedAppointment) throw Error;
-    console.log(updateAppointment);
-    const smsMessage = `Greetings from CareManage. ${
+
+    const smsMessage = `Greetings from Carepulse. ${
       type === "schedule"
         ? `Your appointment is confirmed for ${
             formatDateTime(appointment.schedule!).dateTime

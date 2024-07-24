@@ -69,10 +69,9 @@ export const AppointmentForm = ({
       default:
         status = "pending";
     }
-    console.log("im here", patientId, type);
+
     try {
       if (type === "create" && patientId) {
-        console.log("im here", patientId);
         const appointment = {
           userId,
           patient: patientId,
@@ -84,7 +83,7 @@ export const AppointmentForm = ({
         };
 
         const newAppointment = await createAppointment(appointment);
-        console.log("im here", patientId);
+
         if (newAppointment) {
           form.reset();
           router.push(
@@ -172,7 +171,7 @@ export const AppointmentForm = ({
               name="schedule"
               label="Expected appointment date"
               showTimeSelect
-              dateFormat="MM/dd/yyyy  -  h:mm aa"
+              dateFormat="dd/MM/yyyy  -  h:mm aa"
             />
 
             <div
